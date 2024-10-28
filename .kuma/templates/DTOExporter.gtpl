@@ -1,7 +1,7 @@
-{{range .data}}import { {{ toPascalCase . }} } from "./{{ toSnakeCase . }}" 
+{{range .data}}import type { {{ toPascalCase . }} } from "./{{ toSnakeCase . }}" 
 {{end}}
 
-export {
+export type {
 {{range .data}}{{toPascalCase .}},
 {{end -}}
 }

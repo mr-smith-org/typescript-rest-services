@@ -8,12 +8,6 @@ create-services:
             - input:
                 label: "What directory do you want to create the files in?"
                 out: baseDir
-            - input:
-                label: "What is your project name?"
-                out: projectName
-            - input:
-                label: "What is your project repository?"
-                out: projectRepository
 
     - create:
         from: base.yaml

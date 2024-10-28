@@ -1,8 +1,3 @@
-#  Global variables to be used in all the templates.
-global:
-  projectName: "{{ .data.projectName }}"
-  projectRepository: "{{ .data.projectRepository }}"
-
 # Structure of folders and files that will be generated
 structure:
   {{.data.baseDir}}:
@@ -15,7 +10,13 @@ structure:
 
         http_provider.ts:
           template: templates/HttpProvider.gtpl
+
+        fetch_http_provider.ts:
+          template: templates/FetchHttpProvider.gtpl
+
+        axios_http_provider.ts:
+          template: templates/AxiosHttpProvider.gtpl
+
         http_provider_interface.ts:
           template: templates/HttpProviderInterface.gtpl
-        dto.ts:
-          template: templates/HttpProviderDTO.gtpl
+     

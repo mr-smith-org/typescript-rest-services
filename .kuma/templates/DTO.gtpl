@@ -1,9 +1,9 @@
 {{- range .data.properties -}}
-{{$ref :=  getRefFrom . }}
-{{- if not $ref  }}{{if getRefFrom .items}}{{$ref = getRefFrom .items}}{{- end}}{{- end}}
-{{- if $ref }}
-import { {{ toPascalCase $ref }} } from './{{ toSnakeCase $ref }}'
-{{- end -}}
+    {{$ref :=  getRefFrom . }}
+    {{- if not $ref  }}{{if getRefFrom .items}}{{$ref = getRefFrom .items}}{{- end}}{{- end}}
+    {{- if $ref }}
+import type { {{ toPascalCase $ref }} } from './{{ toSnakeCase $ref }}'
+    {{- end -}}
 {{- end -}}
 {{"\n"}}
 {{- if .data.description }}
@@ -11,9 +11,9 @@ import { {{ toPascalCase $ref }} } from './{{ toSnakeCase $ref }}'
 {{- end }}
 export type {{ toPascalCase .data.name }} = { 
     {{- range $name, $prop := .data.properties}}
-    {{- if $prop.description }}
+        {{- if $prop.description }}
     // {{ $prop.description }}
-    {{- end }}
+        {{- end }}
     {{ $name }}{{- if not $prop.required -}}?{{- end -}}: {{- block "TypeResolver" $prop }}{{end}}
     {{- end}}
 }

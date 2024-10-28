@@ -1,44 +1,18 @@
-import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { IHttpProvider } from "../../providers/http/http_provider_interface";{{"\n"}}
-{{- $imports := list -}}
-{{- range $path, $op :=  .data.operations -}}
-  {{- range  $method, $data := $op -}}
-    {{- $body := getParamsByType $data.parameters "body" -}}
-    {{- range $body -}}
-      {{- $schema := .schema }}
-      {{- if eq $schema.type "array" -}}
-          {{$schema = $schema.items }}
-      {{- end -}}
-      {{- if getRefFrom $schema -}}
-        {{- $import := getRefFrom $schema -}}
-        {{- $hasImport := $imports | has $import }}
-        {{- if not $hasImport -}}
-          {{- $imports = $imports | append $import -}}
-import { {{toPascalCase $import}} } from "../../dto/{{ toSnakeCase $import }}"{{"\n"}}
-        {{- end -}}
-      {{- end -}}
-    {{- end -}}
-    {{- range $data.responses -}}
-      {{- $schema := .schema }}
-      {{- if eq $schema.type "array" -}}
-          {{$schema = $schema.items }}
-      {{- end -}}
-      {{- if getRefFrom $schema -}}
-        {{- $import := getRefFrom $schema -}}
-        {{- $hasImport := $imports | has $import }}
-        {{- if not $hasImport -}}
-           {{- $imports = $imports | append $import -}}
-import { {{toPascalCase $import}} } from "../../dto/{{ toSnakeCase $import }}"{{"\n"}}
-        {{- end -}}
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
+{{- $refs := getRefsList .data.operations -}}
+{{- if $refs -}}
+import type { 
+  {{ range $key, $value := getRefsList .data.operations -}}
+{{ toPascalCase $value }},
+  {{ end -}}
+} from '../../dto'
 {{- end -}}
 {{"\n"}}
+import type { 
+  IHttpProvider, 
+  RequestConfig, 
+  HttpResponse
+ } from '../../providers/http/http_provider_interface'
 
-{{- if .data.description }}
-// {{ .data.description }}
-{{- end }}
 export class {{toPascalCase .data.name}}Service {
   private http: IHttpProvider;
 
@@ -62,7 +36,7 @@ export class {{toPascalCase .data.name}}Service {
       {{- if $body }}body?: {{ range $body }}
         {{- block "TypeResolver" .schema  }}{{end}},
       {{- end -}}{{- end -}}
-    },   config?: AxiosRequestConfig):
+    },   config?: RequestConfig):
      
       {{- $responses := list -}}
       {{- range $index, $response := $data.responses -}}
@@ -73,7 +47,7 @@ export class {{toPascalCase .data.name}}Service {
           {{- end -}}
         {{- end -}}
       {{- end -}}
-    Promise<AxiosResponse<{{- block "ResponseTypeResolver" $responses -}}{{end}}>> {
+    Promise<HttpResponse<{{- block "ResponseTypeResolver" $responses -}}{{end}}>> {
       return await this.http.request<{{- block "ResponseTypeResolver" $responses -}}{{end}}>("{{ toLower $method }}","{{ $path }}", data, config);
     }
 

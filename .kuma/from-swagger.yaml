@@ -1,6 +1,7 @@
 {{$base := .data.apiData}}
+{{$tags := getAllTags $base.paths}}
 structure:
-      src:
+    {{.data.baseDir}}:
         dto:
           index.ts:
             template: templates/DTOExporter.gtpl
@@ -22,17 +23,17 @@ structure:
           builder.ts:
             template: templates/ServiceBuilder.gtpl
             data:
-              {{range $base.tags}}
-              - {{.name}} 
+              {{range $tags}}
+              - {{.}} 
               {{end}}
           index.ts:
             template: templates/ServiceExporter.gtpl
             data:
-              {{range $base.tags}}
-              - {{.name}}
+              {{range $tags}}
+              - {{.}}
               {{end}}
 
-          {{range $base.tags}}{{toSnakeCase .name}}:
+          {{range $tags}}{{toSnakeCase .}}:
             {{$tag := .}}
             service.ts:
               template: templates/Service.gtpl
@@ -40,10 +41,9 @@ structure:
                 - templates/TypeResolver.gtpl
                 - templates/ResponseTypeResolver.gtpl
               data:
-                name: {{$tag.name}}
-                description:  {{$tag.description}}
+                name: {{$tag}}
                 operations:
-                {{range $path, $req := getPathsByTag $base.paths $tag.name}}
+                {{range $path, $req := getPathsByTag $base.paths $tag}}
                   {{$path}}: 
                       {{range toYaml $req}}{{.}}
                       {{end}}
