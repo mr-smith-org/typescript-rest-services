@@ -3,7 +3,7 @@ import type { RequestData, HttpError, IHttpProvider, HttpMethod, HttpResponse, R
 /**
  * Base implementation of IHttpProvider.
  */
-export abstract class HttpProvider implements IHttpProvider {
+export abstract class HttpProvider<C> implements IHttpProvider<C> {
   protected baseURL: string;
 
   constructor(baseURL: string) {
@@ -42,6 +42,6 @@ export abstract class HttpProvider implements IHttpProvider {
     method: HttpMethod,
     url: string,
     data?: RequestData,
-    config?: RequestConfig
+    config?: RequestConfig<C>
   ): Promise<HttpResponse<T>>;
 }

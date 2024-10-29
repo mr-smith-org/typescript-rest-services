@@ -13,10 +13,10 @@ import type {
   HttpResponse
  } from '../../providers/http/http_provider_interface'
 
-export class {{toPascalCase .data.name}}Service {
-  private http: IHttpProvider;
+export class {{toPascalCase .data.name}}Service<C> {
+  private http: IHttpProvider<C>;
 
-  constructor(http: IHttpProvider) {
+  constructor(http: IHttpProvider<C>) {
     this.http = http;
   }
   {{"\n"}}
@@ -36,7 +36,7 @@ export class {{toPascalCase .data.name}}Service {
       {{- if $body }}body?: {{ range $body }}
         {{- block "TypeResolver" .schema  }}{{end}},
       {{- end -}}{{- end -}}
-    },   config?: RequestConfig):
+    },   config?: RequestConfig<C>):
      
       {{- $responses := list -}}
       {{- range $index, $response := $data.responses -}}

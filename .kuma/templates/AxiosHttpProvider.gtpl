@@ -1,11 +1,11 @@
-import axios, { AxiosInstance, AxiosError } from "axios";
+import axios, { AxiosInstance, AxiosError, AxiosResponse } from "axios";
 import type { RequestData, HttpError, HttpMethod, HttpResponse, RequestConfig, RetryOptions } from "./http_provider_interface";
 import { HttpProvider } from "./http_provider";
 
 /**
  * Axios-based implementation of IHttpProvider.
  */
-export class AxiosHttpProvider extends HttpProvider {
+export class AxiosHttpProvider<C> extends HttpProvider<C> {
   private client: AxiosInstance;
 
   constructor(baseURL: string) {
@@ -17,7 +17,7 @@ export class AxiosHttpProvider extends HttpProvider {
   /**
    * Converts AxiosResponse to HttpResponse.
    */
-  private convertResponse<T>(response: any): HttpResponse<T> {
+  private convertResponse<T>(response: AxiosResponse<T>): HttpResponse<T> {
     const headers: Record<string, string> = {};
     for (const key in response.headers) {
       headers[key] = response.headers[key];
@@ -43,7 +43,7 @@ export class AxiosHttpProvider extends HttpProvider {
     method: HttpMethod,
     url: string,
     data?: RequestData,
-    config?: RequestConfig
+    config?: RequestConfig<C>
   ): Promise<HttpResponse<T>> {
     let finalURL = `${this.baseURL}${url}`;
     if (data?.params) {
@@ -51,13 +51,14 @@ export class AxiosHttpProvider extends HttpProvider {
     }
 
     const axiosConfig: any = {
+      ...config?.config,
       method,
       url: finalURL,
       headers: {
         'Content-Type': 'application/json',
         ...(config?.headers || {}),
       },
-      timeout: config?.timeout || 5000, // Default timeout: 5 seconds
+      timeout: config?.timeout
     };
 
     if (data?.query) {

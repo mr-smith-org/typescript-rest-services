@@ -23,11 +23,11 @@ export interface RetryOptions {
 /**
  * Generic configuration for HTTP requests.
  */
-export interface RequestConfig {
+export interface RequestConfig<C> {
   headers?: Record<string, string>;
   timeout?: number; // Timeout duration in milliseconds
   retry?: RetryOptions; // Retry configuration
-  // Add other common configurations as needed
+  config?: C; // Additional configuration for the specific HTTP provider
 }
 
 /**
@@ -43,7 +43,7 @@ export interface HttpResponse<T> {
 /**
  * HTTP Provider interface to abstract HTTP requests.
  */
-export interface IHttpProvider {
+export interface IHttpProvider<C> {
   /**
    * Makes an HTTP request.
    * @param method HTTP method (GET, POST, etc.)
@@ -56,7 +56,7 @@ export interface IHttpProvider {
     method: HttpMethod,
     url: string,
     data?: RequestData,
-    config?: RequestConfig
+    config?: RequestConfig<C>
   ): Promise<HttpResponse<T>>;
 }
 

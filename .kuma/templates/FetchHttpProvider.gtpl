@@ -4,7 +4,7 @@ import { HttpProvider } from "./http_provider";
 /**
  * Fetch-based implementation of IHttpProvider.
  */
-export class FetchHttpProvider extends HttpProvider {
+export class FetchHttpProvider<C> extends HttpProvider<C> {
   constructor(baseURL: string) {
     baseURL = baseURL.endsWith("/") ? baseURL.slice(0, -1) : baseURL;
     super(baseURL);
@@ -53,7 +53,7 @@ export class FetchHttpProvider extends HttpProvider {
     method: HttpMethod,
     url: string,
     data?: RequestData,
-    config?: RequestConfig
+    config?: RequestConfig<C>
   ): Promise<HttpResponse<T>> {
     let finalURL = `${this.baseURL}${url}`;
     if (data?.params) {
