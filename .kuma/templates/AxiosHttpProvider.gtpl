@@ -73,7 +73,7 @@ export class AxiosHttpProvider<C> extends HttpProvider<C> {
     let attempt = 0;
     let currentDelay = retryOptions.delay;
 
-    while (attempt < retryOptions.retries) {
+    while (attempt <= retryOptions.retries) {
       try {
         const response = await this.client.request(axiosConfig);
         return this.convertResponse<T>(response);

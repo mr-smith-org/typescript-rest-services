@@ -86,7 +86,7 @@ export class FetchHttpProvider<C> extends HttpProvider<C> {
     let attempt = 0;
     let currentDelay = retryOptions.delay;
 
-    while (attempt < retryOptions.retries) {
+    while (attempt <= retryOptions.retries) {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
       fetchOptions.signal = controller.signal;
