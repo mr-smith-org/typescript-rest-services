@@ -4,7 +4,7 @@
 Create rapidly fully type-safe services that consume REST APIs through a Swagger/OpenAPI 2.0 file.
 
 ```bash
-kuma exec module -m kuma-typescript-rest-services -r create-services 
+mr exec module -m typescript-rest-services -r create-services 
 ```
 
 ![out](https://github.com/user-attachments/assets/6a73274f-7bf1-4b65-8f22-3eb4d6d6d067)
@@ -25,5 +25,5 @@ services.pet.getPetById({ params: { petId: 1 } }).then(result => console.log(res
 const services = buildServices(new FetchHttpProvider("https://petstore.swagger.io/v2/"));
 services.pet.getPetById({ params: { petId: 1 } }).then(result => console.log(result.data));
 ```
-### Kuma docs 
-https://kuma-framework.vercel.app/
+### Mr. Smith docs 
+[https://mr-smith.site](https://mr-smith.site)
