@@ -6,9 +6,7 @@ Create rapidly fully type-safe services that consume REST APIs through a Swagger
 ```bash
 mr exec module -m typescript-rest-services -r create-services 
 ```
-
-![out](https://github.com/user-attachments/assets/6a73274f-7bf1-4b65-8f22-3eb4d6d6d067)
-
+![out](https://github.com/user-attachments/assets/d4de27d0-1879-4585-b65b-468f8ca79cf6)
 
 ## Usage 
 
